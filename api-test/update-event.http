@@ -5,5 +5,5 @@ Content-Type:: application/json
   "name": "Updated test event",
   "description": "A test event",
   "location": "New location",
-  "dateTime": "2025-01-01T15:30:00Z"
+  "dateTime": "2026-01-01T15:30:00Z"
 }

@@ -8,6 +8,6 @@ func RegisterRoutes(server *gin.Engine) {
 	server.GET("/events", getEvents) // Using () (like getEvenets() executes the function immediately.
 	server.POST("/events", createEvent)
 	server.GET("/events/:eventId", getEvent)
-	server.PUT("/events/:id", updateEvent)
+	server.PUT("/events/:eventId", updateEvent)
 
 }
