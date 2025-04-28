@@ -98,4 +98,19 @@ func (event Event) Update() error {
 	return err
 }
 
-// Query to query data, Exec to write/change data.
+func (event Event) Delete() error {
+	//NOTE - Backward single-quotes lets write strings in multilines.
+	query := `
+	DELETE FROM events
+	WHERE id = ?
+	`
+	stmt, err := db.DB.Prepare(query)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+	_, err = stmt.Exec(event.ID)
+	return err
+}
+
+//NOTE -  Query to query data, Exec to write/change data.

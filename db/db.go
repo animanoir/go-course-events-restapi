@@ -27,6 +27,7 @@ func InitDB() {
 	createTables()
 }
 
+// NOTE - I had problems with "dateTime" being TEXT... If it's a date it must be of type DATETIME.
 func createTables() {
 	createEventsTable := `
 	CREATE TABLE IF NOT EXISTS events (
