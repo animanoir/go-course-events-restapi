@@ -1,6 +1,7 @@
 package models
 
 import (
+	"errors"
 	"events-rest-api/db"
 	"events-rest-api/utils"
 	"fmt"
@@ -12,7 +13,7 @@ type User struct {
 	Password string `binding: "required"`
 }
 
-func (u User) Save() error { //NOTE - error at the end means that this function might return an error.
+func (u *User) Save() error { //NOTE - error at the end means that this function might return an error.
 	query := "INSERT INTO users(email, password) VALUES (?, ?)"
 	stmt, err := db.DB.Prepare(query)
 
@@ -22,6 +23,9 @@ func (u User) Save() error { //NOTE - error at the end means that this function 
 
 	defer stmt.Close()
 	hashedPassword, err := utils.HashPassword(u.Password)
+	if err != nil {
+		return err
+	}
 
 	result, err := stmt.Exec(u.Email, hashedPassword)
 	if err != nil {
@@ -56,4 +60,20 @@ func GetAllUsers() ([]User, error) {
 		users = append(users, user)
 	}
 	return users, nil
+}
+
+func (u *User) ValidateCredentials() error {
+	query := "SELECT password FROM users WHERE email = ?"
+	row := db.DB.QueryRow(query, u.Email)
+	var retrievedPassword string
+	err := row.Scan(&retrievedPassword)
+	if err != nil {
+		return errors.New("credentials invalid")
+	}
+
+	passwordIsValid := utils.CheckPasswordHash(u.Password, retrievedPassword)
+	if !passwordIsValid {
+		return errors.New("credentials invalid")
+	}
+	return nil
 }

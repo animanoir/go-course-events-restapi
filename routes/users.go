@@ -39,3 +39,27 @@ func getUsers(context *gin.Context) {
 	}
 	context.JSON(http.StatusOK, users)
 }
+
+func login(context *gin.Context) {
+	var user models.User
+	err := context.ShouldBindJSON(&user)
+	if err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{
+			"message": "Could not do the thing",
+			"error":   err.Error(),
+		})
+	}
+
+	err = user.ValidateCredentials()
+	if err != nil {
+		context.JSON(http.StatusUnauthorized, gin.H{
+			"message": "Could not authorize the user.",
+			"error":   err.Error(),
+		})
+		return
+	}
+	context.JSON(http.StatusOK, gin.H{
+		"message": "Login successful",
+	})
+
+}
