@@ -2,6 +2,7 @@ package routes
 
 import (
 	"events-rest-api/models"
+	"events-rest-api/utils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -58,8 +59,18 @@ func login(context *gin.Context) {
 		})
 		return
 	}
+
+	token, err := utils.GenerateToken(user.Email, user.ID)
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{
+			"message": "There was an error generating the token.",
+		})
+	}
+
 	context.JSON(http.StatusOK, gin.H{
 		"message": "Login successful",
+		"token":   token,
 	})
+	// I used to have a panic because I tried to send an error here, but this should not be.
 
 }
