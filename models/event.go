@@ -2,7 +2,6 @@ package models
 
 import (
 	"events-rest-api/db"
-	"fmt"
 	"log"
 	"time"
 )
@@ -60,7 +59,6 @@ func GetAllEvents() ([]Event, error) {
 			&event.DateTime,
 			&event.UserID,
 		)
-		fmt.Print(rows)
 		if err != nil {
 			return nil, err
 		}
