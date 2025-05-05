@@ -3,6 +3,7 @@ package routes
 import (
 	"events-rest-api/models"
 	"events-rest-api/utils"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -52,6 +53,7 @@ func login(context *gin.Context) {
 	}
 
 	err = user.ValidateCredentials()
+
 	if err != nil {
 		context.JSON(http.StatusUnauthorized, gin.H{
 			"message": "Could not authorize the user.",
@@ -61,10 +63,14 @@ func login(context *gin.Context) {
 	}
 
 	token, err := utils.GenerateToken(user.Email, user.ID)
+	fmt.Print(err)
+
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{
 			"message": "There was an error generating the token.",
+			"error":   err.Error(),
 		})
+		return
 	}
 
 	context.JSON(http.StatusOK, gin.H{

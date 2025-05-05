@@ -2,6 +2,7 @@ package routes
 
 import (
 	"events-rest-api/models"
+	"events-rest-api/utils"
 	"net/http"
 	"strconv"
 
@@ -33,9 +34,27 @@ func getEvent(context *gin.Context) {
 }
 
 func createEvent(context *gin.Context) {
+	token := context.Request.Header.Get("Authorization")
+	if token == "" {
+		context.JSON(http.StatusUnauthorized, gin.H{
+			"message": "Not authorized",
+		})
+		return
+	}
+
+	// Route protection.
+	userId, err := utils.VerifyToken(token)
+
+	if err != nil {
+		context.JSON(http.StatusUnauthorized, gin.H{
+			"message": "You're not authorized to do that, my baby.",
+		})
+		return
+	}
+
 	var event models.Event
 	// Works a lil'bit like the Scan.
-	err := context.ShouldBindJSON(&event)
+	err = context.ShouldBindJSON(&event)
 	if err != nil {
 		context.JSON(http.StatusBadGateway, gin.H{
 			"message": "No funcionó tu puta madre.",
@@ -45,7 +64,7 @@ func createEvent(context *gin.Context) {
 	}
 
 	event.ID = 1
-	event.UserID = 1
+	event.UserID = userId
 
 	err = event.Save()
 	if err != nil {

@@ -1,9 +1,10 @@
 POST http://localhost:8080/events
 Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImNAYy5jb20iLCJleHAiOjE3NDY0NzYwMDAsInVzZXJJZCI6M30.D_oc2wvRnOlSB80i3a3I80LYB9AoNwwHCiGyl_6-GQY
 
 {
-  "name": "Party",
-  "description": "of my son...",
+  "name": "Sex",
+  "description": "with gf...",
   "location": "My house",
   "dateTime": "2025-01-01T16:30:00Z"
 }
