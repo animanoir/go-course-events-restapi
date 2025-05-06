@@ -3,7 +3,7 @@ Content-Type: application/json
 Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFAYy5jb20iLCJleHAiOjE3NDY1NTk1MTIsInVzZXJJZCI6MX0.mvZmtocqiXKpXj0UBFMBa63aWU5t1cHeF6judg899EY
 
 {
-  "name": "Sex",
+  "name": "LOVE",
   "description": "with gf...",
   "location": "My house",
   "dateTime": "2025-01-01T16:30:00Z"

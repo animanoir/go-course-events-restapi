@@ -122,4 +122,16 @@ func (e Event) Register(userId int64) error {
 	return err
 }
 
+// The (e Event) is a method receiver meaning that defines the function as a metohd that belongs to the Event type.
+func (e Event) CancelRegistration(userId int64) error {
+	query := "DELETE FROM registrations WHERE event_id = ? AND user_id = ?"
+	stmt, err := db.DB.Prepare(query)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+	_, err = stmt.Exec(e.ID, userId)
+	return err
+}
+
 //NOTE -  Query to query data, Exec to write/change data.
